@@ -7,6 +7,7 @@ class YARD::Handlers::Ruby::ClassHandler < YARD::Handlers::Ruby::Base
 
   process do
     classname = statement[0].source.gsub(/\s/, '')
+    autovivify_parents(classname)
     if statement.type == :class
       superclass = parse_superclass(statement[1])
       if superclass == "Struct"

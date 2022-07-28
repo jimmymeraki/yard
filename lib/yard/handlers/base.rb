@@ -590,6 +590,27 @@ module YARD
       def caller_method
         raise NotImplementedError
       end
+
+      def autovivify_parents(name)
+        parts = []
+
+        while name =~ /(?:::)([^:]+)$/
+          parts.push($1)
+          name = $`
+        end
+
+        return if parts.empty?
+
+        ns = :root
+        n = name
+
+        loop do
+          ns = ModuleObject.new(ns, name)
+          ns.add_file("(autovivifed)")
+          break if parts.empty?
+          name = parts.pop
+        end
+      end
     end
   end
 end
